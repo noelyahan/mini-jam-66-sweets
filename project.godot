@@ -21,13 +21,14 @@ run/main_scene="res://Scene.tscn"
 [autoload]
 
 AudioManager="*res://AudioManager.gd"
+SignalManager="*res://SignalManager.gd"
 
 [display]
 
 window/size/width=320
 window/size/height=180
-window/size/test_width=1280
-window/size/test_height=720
+window/size/test_width=640
+window/size/test_height=360
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
@@ -50,6 +51,8 @@ right_click={
 2d_physics/layer_2="jelly"
 2d_physics/layer_3="level"
 2d_physics/layer_4="wall"
+2d_physics/layer_5="enemy"
+2d_physics/layer_6="ground"
 
 [rendering]
 

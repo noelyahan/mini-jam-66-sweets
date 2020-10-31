@@ -27,10 +27,14 @@ export var enable_texture = true
 export var initial_position = Vector2.ZERO
 var active_string = true
 
+
 var pos: PoolVector2Array
 var pos_ex: PoolVector2Array
 var count: int
 
+
+func _on_sweet_spawned(e):
+	string_shake(e)
 
 func _on_player_floor(state, jelly, jumped, height):
 	string_collide = state
@@ -47,10 +51,11 @@ func _ready():
 	resize_arrays()
 	init_position()
 	$StaticBody2D.add_child(shape)	
-	add_child(ground)
 	if enable_texture:
+		add_child(ground)
 		ground.texture = texture
-	get_node("../JellyK").connect("on_floor", self, "_on_player_floor")
+	SignalManager.connect("on_floor", self, "_on_player_floor")
+	SignalManager.connect("sweet_spawned", self, "_on_sweet_spawned")
 
 func get_count(distance: float):
 	var new_count = ceil(distance / constrain)
@@ -77,36 +82,43 @@ var lastX = 0
 var area = 1
 var bounceBack = 0
 
-func string_shake():
-	if !string_pull and string_collide and string_pull_count == 0 and active_string:
-		if top:
-			AudioManager.play("res://assets/sounds/waterdrip_1.wav")
-		var i = floor(string_pull_vec.x)
-		if string_pull_impact.x != 0:
-			string_pull_vec.x = string_pull_vec.x + string_pull_impact.x
-		if string_pull_impact.y != 0:
-			string_pull_vec.y = string_pull_vec.y + string_pull_impact.y
-		for x in range (area):
-			if i+x >= len(pos):
-				continue
-			pos_ex[i+x] = pos[i+x]
-			pos_ex[i-x] = pos[i-x]
-			pos[i+x] = string_pull_vec
-			pos[i-x] = string_pull_vec
-		string_pull = true
-		string_pull_count = 1
-		if top:
-			active_string = false
+func string_shake(vec):
+#	if !string_pull and string_collide and string_pull_count == 0 and active_string:
+	if top:
+		AudioManager.play("res://assets/sounds/waterdrip_1.wav")
+	var i = floor(vec.x)
+	if string_pull_impact.x != 0:
+		vec.x = vec.x + string_pull_impact.x
+	if string_pull_impact.y != 0:
+		vec.y = vec.y + string_pull_impact.y
+	for x in range (area):
+		if i+x >= len(pos):
+			continue
+		pos_ex[i+x] = pos[i+x]
+		pos_ex[i-x] = pos[i-x]
+		pos[i+x] = vec
+		pos[i-x] = vec
+	string_pull = true
+	string_pull_count = 1
+	if top:
+		active_string = false
 func _process(delta):
-	string_shake()
+	if !string_pull and string_collide and string_pull_count == 0 and active_string:
+		print("position:",string_pull_vec)
+		string_shake(string_pull_vec)
 	if Input.is_action_just_released("click"):
 		if not active_string:
 			return
 		relased = true
 	
+	if Input.is_action_just_pressed("click"):
+		AudioManager.play("res://assets/sounds/waterdrip_2.wav")
+		SignalManager.emit_signal("string_click")
+			
 	if Input.is_action_pressed("click"):
 		if not active_string:
 			return
+		SignalManager.emit_signal("string_click")
 		relased = false	#Move start point
 		var i = floor(get_global_mouse_position().x)
 		if lastX == 0:

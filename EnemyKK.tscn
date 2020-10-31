@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Enemy.gd" type="Script" id=1]
+[ext_resource path="res://HelthBar.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/Blocks_01_64x64_Alt_01_005.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4.37632, 4.07696 )
+
+[node name="EnemyKK" type="KinematicBody2D"]
+collision_layer = 16
+collision_mask = 27
+script = ExtResource( 1 )
+
+[node name="Blocks_01_64x64_Alt_01_005" type="Sprite" parent="."]
+scale = Vector2( 0.134, 0.134 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+
+[node name="HelthBar" parent="." instance=ExtResource( 2 )]
+margin_left = -4.63851
+margin_top = -7.79324
+margin_right = 35.3615
+margin_bottom = 11.2068
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

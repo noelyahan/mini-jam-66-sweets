@@ -3,6 +3,7 @@ extends KinematicBody2D
 export var jump_power = 800
 export var min_jump_power = 600
 export var jump_control_diff = 50
+export var damage = 2
 
 var stopping_friction = 0.6
 var dash_direction := Vector2(1, 0)
@@ -10,17 +11,27 @@ var gravity = 30
 var vel = Vector2()
 var screensize
 var dashing := false
+var last_jump_status := false
+#var drop_sound := false
 
-signal on_floor(state, player, jumped, height)
 
 
 func _ready():
 	screensize = get_viewport().get_visible_rect().size
+	SignalManager.emit_signal("sweet_spawned", Vector2(position.x, 150))
 	
 func play_jump_sound():
 	AudioManager.play("res://assets/sounds/bloop.wav")
-	pass
-
+	
+func get_last_jump_status():
+	return last_jump_status
+	
+func get_damage():
+	return damage
+#
+#func play_drop_sound():
+#	AudioManager.play("res://assets/sounds/waterdrip_2.wav")	
+	
 var jumped = false
 func _physics_process(delta):
 	gravity()
@@ -32,19 +43,23 @@ func _physics_process(delta):
 		var jp = range_lerp(abs(dis), 0, jump_control_diff, min_jump_power, jump_power)
 		jumped = true	
 		if dis < jump_control_diff:	
-			emit_signal("on_floor", is_on_floor(), self, true, jp)	
+			SignalManager.emit_signal("on_floor", is_on_floor(), self, true, jp)	
 			jump(jp)
-	if is_on_floor():		
-		emit_signal("on_floor", is_on_floor(), self, false, null)
+	if is_on_floor():	
+		SignalManager.emit_signal("on_floor", is_on_floor(), self, false, null)
 		scale = lerp(scale, Vector2(1.25, 0.50), 0.25)
 		jumped = false
+	
 	if not is_on_floor() and jumped:
 		scale = lerp(scale, Vector2(1, 1), 0.25)
 	if vel.y > 100:
 		jumped = true
+		last_jump_status = true
+
 	vel = move_and_slide(vel, Vector2.UP)
 
 func jump(power):
+	last_jump_status = false
 	play_jump_sound()
 	if vel.y > 0: vel.y = 0
 	vel.y -= power
@@ -71,6 +86,6 @@ func dash():
 			dash_direction = Vector2(-1, y)
 		vel = dash_direction.normalized() * 2000
 		dashing = true
-		emit_signal("on_floor", is_on_floor(), self, true, null)	
+		SignalManager.emit_signal("on_floor", is_on_floor(), self, true, null)	
 		yield(get_tree().create_timer(0.5), "timeout")
 		dashing = false	
