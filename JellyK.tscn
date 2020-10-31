@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://JellyK.gd" type="Script" id=2]
+[ext_resource path="res://assets/Blocks_01_64x64_Alt_01_002.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4.36736, 4.37791 )
+
+[node name="JellyK" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 9
+script = ExtResource( 2 )
+
+[node name="Blocks_01_64x64_Alt_01_002" type="Sprite" parent="."]
+position = Vector2( 0.0977688, -0.115596 )
+scale = Vector2( 0.133758, 0.133758 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 0.115982 )
+shape = SubResource( 1 )

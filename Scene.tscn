@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Verlet.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Wall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://JellyK.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scene.gd" type="Script" id=4]
+
+[node name="Scene" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="TopString" parent="." instance=ExtResource( 1 )]
+position = Vector2( 5.82367, 140.702 )
+z_index = 1
+length = 310.0
+gravity = Vector2( 0, 0 )
+top = true
+initial_position = Vector2( 0, -130 )
+
+[node name="BottomString" parent="." instance=ExtResource( 1 )]
+position = Vector2( 5.82367, 140.702 )
+z_index = 1
+length = 310.0
+gravity = Vector2( 0, -10 )
+string_pull_impact = Vector2( 0, 30 )
+bottom = true
+
+[node name="JellyK" parent="." instance=ExtResource( 3 )]
+position = Vector2( 140.385, 84.9484 )
+jump_power = 600
+min_jump_power = 500
+
+[node name="WallLeft" parent="." instance=ExtResource( 2 )]
+position = Vector2( 6.61584, -0.735092 )
+
+[node name="WallRight" parent="." instance=ExtResource( 2 )]
+position = Vector2( 285.216, -1.4702 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 145.383, 88.5494 )
+current = true
+zoom = Vector2( 0.8, 1 )
