@@ -7,8 +7,9 @@
 extents = Vector2( 4.36736, 4.37791 )
 
 [node name="JellyK" type="KinematicBody2D"]
+z_index = 4
 collision_layer = 2
-collision_mask = 9
+collision_mask = 45
 script = ExtResource( 2 )
 
 [node name="Blocks_01_64x64_Alt_01_002" type="Sprite" parent="."]

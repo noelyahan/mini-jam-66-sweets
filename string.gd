@@ -7,7 +7,7 @@ export (Vector2) var gravity = Vector2(0,9.8)
 export (float) var friction = 0.9
 export (bool) var start_pin = true
 export (bool) var end_pin = true
-
+export (PackedScene) var SugarEffect
 
 # custom my code
 var screensize
@@ -33,7 +33,24 @@ var pos_ex: PoolVector2Array
 var count: int
 
 
+
+func suggery_spread(p):
+	if not SugarEffect:
+		return
+	var e = SugarEffect.instance()
+	e.time = 0.2
+	e.position = Vector2(p.x, p.y - 10)
+	add_child(e)
+	
+	
 func _on_sweet_spawned(e):
+	if bottom:
+		return
+	string_shake(e)
+	
+func _on_enemy_dropped(e):
+	if top:
+		return
 	string_shake(e)
 
 func _on_player_floor(state, jelly, jumped, height):
@@ -56,6 +73,7 @@ func _ready():
 		ground.texture = texture
 	SignalManager.connect("on_floor", self, "_on_player_floor")
 	SignalManager.connect("sweet_spawned", self, "_on_sweet_spawned")
+	SignalManager.connect("enemy_dropped", self, "_on_enemy_dropped")
 
 func get_count(distance: float):
 	var new_count = ceil(distance / constrain)
@@ -114,6 +132,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("click"):
 		AudioManager.play("res://assets/sounds/waterdrip_2.wav")
 		SignalManager.emit_signal("string_click")
+		suggery_spread(get_global_mouse_position())
 			
 	if Input.is_action_pressed("click"):
 		if not active_string:

@@ -4,6 +4,7 @@ export var jump_power = 800
 export var min_jump_power = 600
 export var jump_control_diff = 50
 export var damage = 2
+export (PackedScene) var SugarEffect
 
 var stopping_friction = 0.6
 var dash_direction := Vector2(1, 0)
@@ -12,6 +13,7 @@ var vel = Vector2()
 var screensize
 var dashing := false
 var last_jump_status := false
+var sugar_spreded = false
 #var drop_sound := false
 
 
@@ -20,6 +22,13 @@ func _ready():
 	screensize = get_viewport().get_visible_rect().size
 	SignalManager.emit_signal("sweet_spawned", Vector2(position.x, 150))
 	
+
+func suggery_spread():
+	var e = SugarEffect.instance()
+	e.time = 0.2
+	e.position = Vector2(e.position.x, e.position.y - 10)
+	add_child(e)	
+
 func play_jump_sound():
 	AudioManager.play("res://assets/sounds/bloop.wav")
 	
@@ -45,22 +54,25 @@ func _physics_process(delta):
 		if dis < jump_control_diff:	
 			SignalManager.emit_signal("on_floor", is_on_floor(), self, true, jp)	
 			jump(jp)
-	if is_on_floor():	
+	if is_on_floor():
+		if !sugar_spreded:
+			suggery_spread()
+			sugar_spreded = true
 		SignalManager.emit_signal("on_floor", is_on_floor(), self, false, null)
 		scale = lerp(scale, Vector2(1.25, 0.50), 0.25)
 		jumped = false
 	
 	if not is_on_floor() and jumped:
 		scale = lerp(scale, Vector2(1, 1), 0.25)
+	
 	if vel.y > 100:
 		jumped = true
-		last_jump_status = true
 
 	vel = move_and_slide(vel, Vector2.UP)
 
 func jump(power):
-	last_jump_status = false
 	play_jump_sound()
+	last_jump_status = true	
 	if vel.y > 0: vel.y = 0
 	vel.y -= power
 	pass

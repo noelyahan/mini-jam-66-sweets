@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ParticleClean.gd" type="Script" id=1]
+
+[sub_resource type="ParticlesMaterial" id=1]
+emission_shape = 1
+emission_sphere_radius = 9.53
+flag_disable_z = true
+direction = Vector3( -1, 0, 0 )
+spread = 69.0
+gravity = Vector3( 0, 50, 0 )
+initial_velocity = 66.66
+initial_velocity_random = 0.23
+angular_velocity = -384.0
+angular_velocity_random = 0.13
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = -96.0
+angle_random = 0.07
+scale = 1.4
+
+[sub_resource type="ParticlesMaterial" id=2]
+emission_shape = 1
+emission_sphere_radius = 10.75
+flag_disable_z = true
+spread = 48.43
+gravity = Vector3( 0, 50, 0 )
+initial_velocity = 38.1
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 1.4
+scale_random = 0.11
+
+[node name="SugarParticle" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="ParticleLeft" type="Particles2D" parent="."]
+process_material = SubResource( 1 )
+
+[node name="ParticlesRight" type="Particles2D" parent="."]
+process_material = SubResource( 2 )
