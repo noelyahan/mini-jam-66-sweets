@@ -1,11 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Enemy.gd" type="Script" id=1]
 [ext_resource path="res://HelthBar.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/Blocks_01_64x64_Alt_01_005.png" type="Texture" id=3]
+[ext_resource path="res://assets/lime_sprite_sheet.png" type="Texture" id=3]
 [ext_resource path="res://SugarParticle.tscn" type="PackedScene" id=4]
 [ext_resource path="res://DistroyParticle.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Animations.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/heart_sprite_sheet.png" type="Texture" id=7]
+[ext_resource path="res://assets/strawb_sprite_sheet.png" type="Texture" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4.37632, 4.07696 )
@@ -21,12 +23,28 @@ SugarEffect = ExtResource( 4 )
 DistroyEffect = ExtResource( 5 )
 
 [node name="Animations" parent="." instance=ExtResource( 6 )]
-position = Vector2( 0.132435, -7.31083 )
+position = Vector2( 0.191427, -7.31083 )
 scale = Vector2( 0.75, 0.75 )
 
-[node name="Blocks_01_64x64_Alt_01_005" type="Sprite" parent="."]
-scale = Vector2( 0.134, 0.134 )
+[node name="heart_gummy" type="Sprite" parent="."]
+visible = false
+position = Vector2( -0.289058, -0.499282 )
+scale = Vector2( 0.404992, 0.404992 )
+texture = ExtResource( 7 )
+hframes = 3
+
+[node name="lime_gummy" type="Sprite" parent="."]
+visible = false
+position = Vector2( -0.259562, 1.29998 )
+scale = Vector2( 0.436332, 0.436332 )
 texture = ExtResource( 3 )
+hframes = 3
+
+[node name="straw_b_gummy" type="Sprite" parent="."]
+position = Vector2( 0.684312, -0.233817 )
+scale = Vector2( 0.436332, 0.436332 )
+texture = ExtResource( 8 )
+hframes = 3
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -37,10 +55,10 @@ shape = SubResource( 1 )
 shape = SubResource( 1 )
 
 [node name="HelthBar" parent="." instance=ExtResource( 2 )]
-margin_left = -4.63851
-margin_top = -7.79324
-margin_right = 35.3615
-margin_bottom = 11.2068
+margin_left = -5.0
+margin_top = -8.0
+margin_right = 5.0
+margin_bottom = 9.0
 
 [node name="EnemyTween" type="Tween" parent="."]
 repeat = true

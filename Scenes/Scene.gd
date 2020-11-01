@@ -4,15 +4,19 @@ const Enemy = preload("res://EnemyKK.tscn")
 var screensize
 export var enemy_count = 10
 
-func _on_enemy_count_updated(c):
-	if c <= 1:
-		spawn_enemies(enemy_count, 3)
+func _on_score_updated(x):
+	var c = StatsManager.get_enemy_count() - StatsManager.get_death_count()
+	var t = rand_range(1, 3)
+	var e = rand_range(enemy_count, enemy_count * t)
+	if c <= 3 and not StatsManager.game_over:
+		spawn_enemies(enemy_count, t)
 	
 
 func _ready():
+	StatsManager.init()
 	screensize = get_viewport().get_visible_rect().size
-	AudioManager.play("res://assets/sounds/bg_music.ogg")
-	SignalManager.connect("enemy_count_updated", self, "_on_enemy_count_updated")	
+	AudioManager.play("res://assets/sounds/bg_music_chill.ogg")
+	SignalManager.connect("score_updated", self, "_on_score_updated")	
 	spawn_enemies(enemy_count, 3)
 	
 func spawn_enemies(n, time):

@@ -15,14 +15,15 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Verlet Rope"
-run/main_scene="res://Scene.tscn"
+config/name="Gummy CRush"
+run/main_scene="res://Scenes/Scene.tscn"
 
 [autoload]
 
 AudioManager="*res://AudioManager.gd"
 SignalManager="*res://SignalManager.gd"
 StatsManager="*res://StatsManager.gd"
+Global="*res://Global.gd"
 
 [display]
 
@@ -61,4 +62,5 @@ pointing/emulate_touch_from_mouse=true
 
 [rendering]
 
+environment/default_clear_color=Color( 0.0823529, 0.937255, 0.937255, 1 )
 environment/default_environment="res://default_env.tres"

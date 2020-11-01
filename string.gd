@@ -13,7 +13,7 @@ export (PackedScene) var SugarEffect
 var screensize
 var shape = CollisionPolygon2D.new()
 var ground = Polygon2D.new()
-var texture_2 = preload("res://assets/dark_brown.png")
+#var texture_2 = preload("res://assets/dark_brown.png")
 var texture = preload("res://assets/brown.png")
 var string_pull = false
 var string_pull_height = 0
@@ -61,6 +61,13 @@ func _on_player_floor(state, jelly, jumped, height):
 	string_pull_vec = jelly.position
 
 func _ready():
+	var texture_type = StatsManager.get_liquid_state()
+	if texture_type == 0:
+		texture = preload("res://assets/brown.png")
+	if texture_type == 1:
+		texture = preload("res://assets/white.png")
+	if texture_type == 2:
+		texture = preload("res://assets/white.png")
 	screensize = get_viewport().get_visible_rect().size
 	count = get_count(length)
 	resize_arrays()
@@ -68,8 +75,6 @@ func _ready():
 	$StaticBody2D.add_child(shape)	
 	if enable_texture:
 		ground.texture = texture
-		if top:
-			ground.texture = texture_2
 		add_child(ground)		
 	SignalManager.connect("on_floor", self, "_on_player_floor")
 	SignalManager.connect("sweet_spawned", self, "_on_sweet_spawned")
@@ -123,7 +128,6 @@ func string_shake(vec):
 		active_string = false
 func _process(delta):
 	if !string_pull and string_collide and string_pull_count == 0 and active_string:
-		print("position:",string_pull_vec)
 		if top:
 			return
 		string_shake(string_pull_vec)
@@ -133,7 +137,7 @@ func _process(delta):
 		relased = true
 	
 	if Input.is_action_just_pressed("click"):
-		AudioManager.play("res://assets/sounds/waterdrip_2.wav")
+#		AudioManager.play("res://assets/sounds/waterdrip_2.wav")
 		SignalManager.emit_signal("string_click")
 		suggery_spread(get_global_mouse_position())
 			

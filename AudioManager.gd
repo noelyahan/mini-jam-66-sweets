@@ -7,11 +7,10 @@ var available = []  # The available players.
 
 var queue = []  # The queue of sounds to play.
 
+var loaded = []
 
 
 func _ready():
-	# Create the pool of AudioStreamPlayer nodes.
-
 	for i in num_players:
 		var p = AudioStreamPlayer.new()
 		add_child(p)
@@ -19,14 +18,16 @@ func _ready():
 		p.connect("finished", self, "_on_stream_finished", [p])
 		p.bus = bus
 
-
+	
 func _on_stream_finished(stream):
 	# When finished playing a stream, make the player available again.
-
 	available.append(stream)
 
-
 func play(sound_path):
+	for l in loaded:
+		if l == sound_path && sound_path == "res://assets/sounds/bg_music_chill.ogg":
+			return
+	loaded.append(sound_path)
 	queue.append(sound_path)
 
 

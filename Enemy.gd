@@ -11,12 +11,39 @@ var death_played = false
 
 var dropped := false
 
+const GUMMY_TYPE_HERT = "heart"
+const GUMMY_TYPE_LIME = "lime"
+const GUMMY_TYPE_STRAW = "straw"
+var gummy_type = "" # heart, lime, straw
+
+
 
 func _on_string_click():
 	string_click = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	$heart_gummy.hide()
+	$lime_gummy.hide()
+	$straw_b_gummy.hide()
+	randomize()
+	var frame = rand_range(0, 3)
+	randomize()
+	var sprite = randi() % 3
+	if sprite == 0:
+		$heart_gummy.frame = frame
+		$heart_gummy.show()
+		gummy_type = GUMMY_TYPE_HERT
+	if sprite == 1:
+		$lime_gummy.frame = frame
+		$lime_gummy.show()
+		gummy_type = GUMMY_TYPE_LIME
+	if sprite == 2:
+		$straw_b_gummy.frame = frame
+		$straw_b_gummy.show()
+		gummy_type = GUMMY_TYPE_STRAW
+	
 	$Animations/AnimationPlayer.play("hand")
 	yield(get_tree().create_timer(0.5), "timeout")
 	if collision_mask != 27:
@@ -81,6 +108,16 @@ func squash():
 func normal():
 	scale = Vector2(1, 1)
 
+func get_damage():
+	if gummy_type == GUMMY_TYPE_HERT:
+		return 1
+	if gummy_type == GUMMY_TYPE_LIME:
+		return 1
+	if gummy_type == GUMMY_TYPE_STRAW:
+		return 1
+	return 1
+
+
 func _on_Area2D_body_entered(body):
 	if body.name == "Player":	
 		if string_click and body.get_last_jump_status():
@@ -95,13 +132,12 @@ func _on_Area2D_body_entered(body):
 				AudioManager.play("res://assets/sounds/death.wav")
 				death_played = true
 			yield(get_tree().create_timer(0.2), "timeout")
-			StatsManager.update_score(StatsManager.get_score() + 1)
-			StatsManager.update_enemy_count(StatsManager.get_enemy_count() - 1)
+			StatsManager.update_score(StatsManager.get_score() + get_damage())
+			StatsManager.update_death_count(1)
 			queue_free()
 			
 #		print("string_click:", string_click)
 #		print("body.get_last_jump_status():", body.get_last_jump_status())
-		print("damage:", damage)
 
 
 func _on_Area2D_body_exited(body):
