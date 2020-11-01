@@ -17,19 +17,21 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = -96.0
 angle_random = 0.07
-scale = 1.4
+scale = 2.0
+color = Color( 0.6, 0.12549, 0.12549, 1 )
 
 [sub_resource type="ParticlesMaterial" id=2]
 emission_shape = 1
-emission_sphere_radius = 10.75
+emission_sphere_radius = 0.01
 flag_disable_z = true
-spread = 48.43
+spread = 50.14
 gravity = Vector3( 0, 50, 0 )
-initial_velocity = 38.1
+initial_velocity = 66.67
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-scale = 1.4
+scale = 2.0
 scale_random = 0.11
+color = Color( 0.67451, 0.0431373, 0.0431373, 1 )
 
 [node name="SugarParticle" type="Node2D"]
 script = ExtResource( 1 )

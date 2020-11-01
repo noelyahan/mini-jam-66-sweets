@@ -2,13 +2,21 @@ extends Node2D
 
 const Enemy = preload("res://EnemyKK.tscn")
 var screensize
+export var enemy_count = 10
+
+func _on_enemy_count_updated(c):
+	if c <= 1:
+		spawn_enemies(enemy_count, 3)
+	
 
 func _ready():
 	screensize = get_viewport().get_visible_rect().size
-	AudioManager.play("res://assets/sounds/bg_music_chill.ogg")
-	spawn_enemies(10, 3)
+	AudioManager.play("res://assets/sounds/bg_music.ogg")
+	SignalManager.connect("enemy_count_updated", self, "_on_enemy_count_updated")	
+	spawn_enemies(enemy_count, 3)
 	
 func spawn_enemies(n, time):
+	StatsManager.update_enemy_count(enemy_count)	
 	for i in range (n):
 		yield(get_tree().create_timer(time), "timeout")
 		randomize()

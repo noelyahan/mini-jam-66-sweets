@@ -22,6 +22,7 @@ run/main_scene="res://Scene.tscn"
 
 AudioManager="*res://AudioManager.gd"
 SignalManager="*res://SignalManager.gd"
+StatsManager="*res://StatsManager.gd"
 
 [display]
 

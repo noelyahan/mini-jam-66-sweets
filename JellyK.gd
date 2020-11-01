@@ -14,6 +14,7 @@ var screensize
 var dashing := false
 var last_jump_status := false
 var sugar_spreded = false
+export var player_scale = 1.2
 #var drop_sound := false
 
 
@@ -59,12 +60,13 @@ func _physics_process(delta):
 			suggery_spread()
 			sugar_spreded = true
 		SignalManager.emit_signal("on_floor", is_on_floor(), self, false, null)
-		scale = lerp(scale, Vector2(1.25, 0.50), 0.25)
+		scale = lerp(scale, Vector2(player_scale + .25, player_scale/2), 0.25)
 		jumped = false
 	
 	if not is_on_floor() and jumped:
-		scale = lerp(scale, Vector2(1, 1), 0.25)
-	
+		scale = lerp(scale, Vector2(player_scale, player_scale + .5), 0.25)
+	else:
+		scale = lerp(scale, Vector2(player_scale, player_scale), 0.25)
 	if vel.y > 100:
 		jumped = true
 

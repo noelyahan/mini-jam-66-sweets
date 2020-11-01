@@ -13,7 +13,8 @@ export (PackedScene) var SugarEffect
 var screensize
 var shape = CollisionPolygon2D.new()
 var ground = Polygon2D.new()
-var texture = preload("res://assets/white.png")
+var texture_2 = preload("res://assets/dark_brown.png")
+var texture = preload("res://assets/brown.png")
 var string_pull = false
 var string_pull_height = 0
 var string_collide = false
@@ -25,14 +26,11 @@ export var top = false
 export var bottom = false
 export var enable_texture = true
 export var initial_position = Vector2.ZERO
-var active_string = true
-
+export var active_string = true
 
 var pos: PoolVector2Array
 var pos_ex: PoolVector2Array
 var count: int
-
-
 
 func suggery_spread(p):
 	if not SugarEffect:
@@ -69,11 +67,14 @@ func _ready():
 	init_position()
 	$StaticBody2D.add_child(shape)	
 	if enable_texture:
-		add_child(ground)
 		ground.texture = texture
+		if top:
+			ground.texture = texture_2
+		add_child(ground)		
 	SignalManager.connect("on_floor", self, "_on_player_floor")
 	SignalManager.connect("sweet_spawned", self, "_on_sweet_spawned")
 	SignalManager.connect("enemy_dropped", self, "_on_enemy_dropped")
+
 
 func get_count(distance: float):
 	var new_count = ceil(distance / constrain)
@@ -123,6 +124,8 @@ func string_shake(vec):
 func _process(delta):
 	if !string_pull and string_collide and string_pull_count == 0 and active_string:
 		print("position:",string_pull_vec)
+		if top:
+			return
 		string_shake(string_pull_vec)
 	if Input.is_action_just_released("click"):
 		if not active_string:
@@ -204,7 +207,6 @@ func _process(delta):
 	poly2.append(Vector2(pos[-1].x + x, y))
 	poly2.append(Vector2(pos[0].x + x, y))
 	ground.polygon = poly2
-	
 	
 	
 func update_points(delta):
